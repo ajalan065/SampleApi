@@ -163,7 +163,7 @@ class Rest {
         imagefilledrectangle($this->image, 0, 0, $imgWidth - 1, $imgHeight - 1, $white);
 
         //break lines
-        $splitText = explode ( "\\n" , $text );
+        $splitText = explode ( "." , $text );
         $lines = count($splitText);
 
         foreach($splitText as $txt) {
