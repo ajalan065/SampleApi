@@ -1,19 +1,39 @@
 <?php
-/* File : Rest.php
-*/
+
+/**
+ * File : Rest.php
+ */
 require_once('TwitterApi.php');
 class Rest {
 
-    //public $_content_type = "application/json";
+    /**
+     * @var string
+     */
+    public $_status;
+    /**
+     * @var array
+     */
     public $_request = array();
 
+    /**
+     * @var array
+     */
     public $settings = array();
 
+    /**
+     * @var integer code
+     */
     private $_code = 200;
 
+    /**
+     * @var image
+     */
     private $image;
 
-    public function __construct(){
+    /**
+     * Create a Rest Object
+     */
+    public function __construct() {
 
         $this->settings = array(
             'oauth_access_token' => $_GET['oauth_access_token'],
@@ -24,13 +44,15 @@ class Rest {
         $this->inputs();
     }
 
-    /*public function get_referer(){
-        return $_SERVER['HTTP_REFERER'];
-    }*/
-
+    /**
+     * Main function which creates the image out of the text and also post it on twitter.
+     */
     public function response($data,$status){
+        $this->_status = $data;
         $this->_code = ($status)?$status:200;
         $this->set_headers();
+
+        // Creating image and saving it
         $this->createImage($data, 10, (10*strlen($data)), 2*strlen($data));
         $this->saveImage();
 
@@ -38,6 +60,11 @@ class Rest {
         $this->postTwitter();
     }
 
+    /**
+     * Function to return the status message as per the code queried.
+     *
+     * @return string the staus message.
+     */
     protected function get_status_message(){
         $status = array( 
             200 => 'OK',
@@ -66,33 +93,22 @@ class Rest {
         return ($status[$this->_code])?$status[$this->_code]:$status[500];
     }
 
-    /*public function get_request_method(){
-    return $_SERVER['REQUEST_METHOD'];
-    }*/
-
+    /**
+     * FUnction to set the variable to the given input of the user.
+     */
     private function inputs(){
-        /*switch($_SERVER['REQUEST_METHOD']){
-        case "POST":
-        $this->_request = $this->cleanInputs($_POST);
-        break;
-        case "GET":
-        case "DELETE":
-        $this->_request = $this->cleanInputs($_GET);
-        break;
-        case "PUT":
-        parse_str(file_get_contents("php://input"),$this->_request);
-        $this->_request = $this->cleanInputs($this->_request);
-        break;
-        default:
-        $this->response('',406);
-        break;
-        }*/
-
         if ($_SERVER['REQUEST_METHOD'] == "GET") {
             $this->_request = $this->cleanInputs($_GET);
         }
     }       
 
+    /**
+     * Clean the input to get the actual text.
+     *
+     * @param $data. The text as was passed through the url.
+     *
+     * @return the original text.
+     */
     protected function cleanInputs($data){
         $clean_input = array();
         if(is_array($data)) {
@@ -110,18 +126,25 @@ class Rest {
         return $clean_input;
     }       
 
+    /**
+     * Setting the required headers.
+     */
     protected function set_headers(){
         header("HTTP/1.1 ".$this->_code." ".$this->get_status_message());
         header("Content-Type:application/json");
     }
 
-
     /**
     * Create image from text
+    *
     * @param string text to convert into image
+    *
     * @param int font size of text
+    *
     * @param int width of the image
+    *
     * @param int height of the image
+    *
     * @return boolean
     */
     protected function createImage($text, $fontSize = 20, $imgWidth = 400, $imgHeight = 80) {
@@ -162,8 +185,11 @@ class Rest {
 
     /**
     * Save image as png format
+    *
     * @param string file name to save
+    *
     * @param string location to save image file
+    *
     * @return boolean true|false on success|failure
     */
     protected function saveImage($fileName = 'text-image', $location = ''){
@@ -177,13 +203,12 @@ class Rest {
      */
     protected function postTwitter() {
         $twitter = new TwitterApi($this->settings);
-
-
         $url = 'https://upload.twitter.com/1.1/media/upload.json';
         $requestMethod = 'POST';
 
         $file_name = 'text-image.png';
 
+        // Ppsting the media.
         $postfields = array(
         'media' => base64_encode(file_get_contents($file_name))
         );
@@ -194,12 +219,12 @@ class Rest {
         // get the media_id from the API return
         $media_id = json_decode($response)->media_id;
 
-        // then send the Tweet along with the media ID
+        // post the Tweet of the media ID
         $url = 'https://api.twitter.com/1.1/statuses/update.json';
         $requestMethod = 'POST';
 
         $postfields = array(
-        'status' => 'My amazing tweet',
+        'status' => $this->_status,
         'media_ids' => $media_id,
         );
 
