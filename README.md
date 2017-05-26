@@ -1,6 +1,6 @@
 # SampleApi
 
-This code aims to create an API which would help the twitter users to post their favorite quotes as images on their twitter wall without going to the website.
+This code aims to create an API which would help the twitter users to post their favorite quotes as images on their twitter wall without going to the website.The API returns HTML. On successful operation it gives a message "Updated", or throws an error under Twitter Authentication problem/any other issue.
 
 Requirements
 ============
