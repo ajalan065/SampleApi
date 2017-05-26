@@ -16,13 +16,15 @@ How to get these?
 How to make use of API?
 =======================
 Let us have an example for this:
-Create a sample html page which would contain the fields for providing all the four keys above along with the quote you want to publish.
-On submitting the form, the action page makes a call to the API, and passes all the parametes.
+I have created a custom form to demonstrate just the use of API Endpoint created to tweet images on your account.
+
 The format of the API call is:
 http://localhost/<DIR_NAME>/Api.php?quote=YOUR+QUOTE.&oauth_access_token=YOUR_ACCESS_TOKEN&oauth_access_token_secret=YOUR_TOKEN_SECRET&consumer_key=CONSUMER_KEY&consumer_secret=CONSUMER_SECRET
 
 By default, the DIR_NAME is SampleApi-master. You may change the directory name as per your choice.
-
+ss
 So make sure that the form field names are in accordance to avoid setting it later on while API calling.
+
+Download the entire repository, rename it to create_api and run it on your localhost.
 
 Now, when the form is submitted, the  quote in the form of the image gets published on the twitter wall.
