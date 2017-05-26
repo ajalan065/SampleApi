@@ -27,7 +27,8 @@ class Api extends Rest {
         $this->response('', 206);
       }
 
-      $param=$this->_request['quote'];
+      $param = str_replace("+", " ", $this->_request['quote']);
+      //$param=$this->_request['quote'];
       // If success everythig is good send header as "OK" return param
       $this->response($param, 200);
     }

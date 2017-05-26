@@ -19,7 +19,9 @@ Let us have an example for this:
 Create a sample html page which would contain the fields for providing all the four keys above along with the quote you want to publish.
 On submitting the form, the action page makes a call to the API, and passes all the parametes.
 The format of the API call is:
-https://ajalan065.github.io/SampleApi/Api.php/test?quote=YOUR+QUOTE.&oauth_access_token=YOUR_ACCESS_TOKEN&oauth_access_token_secret=YOUR_TOKEN_SECRET&consumer_key=CONSUMER_KEY&consumer_secret=CONSUMER_SECRET
+http://localhost/<DIR_NAME>/Api.php?quote=YOUR+QUOTE.&oauth_access_token=YOUR_ACCESS_TOKEN&oauth_access_token_secret=YOUR_TOKEN_SECRET&consumer_key=CONSUMER_KEY&consumer_secret=CONSUMER_SECRET
+
+By default, the DIR_NAME is SampleApi-master. You may change the directory name as per your choice.
 
 So make sure that the form field names are in accordance to avoid setting it later on while API calling.
 

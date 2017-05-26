@@ -162,6 +162,9 @@ class Rest {
         $black = imagecolorallocate($this->image, 0, 0, 0);
         imagefilledrectangle($this->image, 0, 0, $imgWidth - 1, $imgHeight - 1, $white);
 
+        if (!substr($text, -1) == '.' && strlen($text)<140) {
+            $text = $text . ".";
+        }
         //break lines
         $splitText = explode ( "." , $text );
         $lines = count($splitText);
